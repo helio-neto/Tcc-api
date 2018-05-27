@@ -46,10 +46,13 @@ router.get('/api/pubs/:pub_id', (req, res) => {
 router.post('/api/pubs', (req, res) => {
 
     let pub = new Pub();      
-    pub.pubname = req.body.name;  
+    pub.pubname = req.body.pubname;  
     pub.location.street = req.body.location.street;
     pub.location.lat = req.body.location.lat;
     pub.location.lng = req.body.location.lng;
+    pub.location.city = req.body.location.city;
+    pub.location.uf = req.body.location.uf;
+    pub.location.hood = req.body.location.hood;
     pub.ownername = req.body.ownername;
     pub.phone = req.body.phone;
     pub.celphone = req.body.celphone;
