@@ -47,9 +47,9 @@ router.post('/api/pubs', (req, res) => {
 
     let pub = new Pub();      
     pub.pubname = req.body.name;  
-    pub.location.street = req.body.street;
-    pub.location.lat = req.body.lat;
-    pub.location.lng = req.body.lng;
+    pub.location.street = req.body.location.street;
+    pub.location.lat = req.body.location.lat;
+    pub.location.lng = req.body.location.lng;
     pub.ownername = req.body.ownername;
     pub.phone = req.body.phone;
     pub.celphone = req.body.celphone;
