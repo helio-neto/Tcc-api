@@ -109,5 +109,14 @@ router.put('/api/pubs/beers/:pub_id', (req, res) => {
         res.json({ message: 'Cerveja(s) adicionada(s)!' });
     });
 });
+// SEARCH WHO HAS THAT BEER BY BEER NAME
+router.get('/api/search/:beer_name', (req, res) => {
+    
+    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, 'pubname location',(err, pub)=>{
+        if (err)
+            res.send(err);
+        res.json({ result: pub });
+    });
+});
 
 module.exports = router;
