@@ -72,16 +72,19 @@ router.put('/api/pubs/:pub_id', (req, res) => {
         if (err)
             res.send(err);
 
-        pub.pubname = req.body.name;  
-        pub.location.street = req.body.street;
-        pub.location.lat = req.body.lat;
-        pub.location.lng = req.body.lng;
-        pub.ownername = req.body.ownername;
-        pub.phone = req.body.phone;
-        pub.celphone = req.body.celphone;
-        pub.info = req.body.info;
-        pub.photo = req.body.photo;
-        pub.beers = req.body.beers;
+            pub.pubname = req.body.pubname;  
+            pub.location.street = req.body.location.street;
+            pub.location.lat = req.body.location.lat;
+            pub.location.lng = req.body.location.lng;
+            pub.location.city = req.body.location.city;
+            pub.location.uf = req.body.location.uf;
+            pub.location.hood = req.body.location.hood;
+            pub.ownername = req.body.ownername;
+            pub.phone = req.body.phone;
+            pub.celphone = req.body.celphone;
+            pub.info = req.body.info;
+            pub.photo = req.body.photo;
+            pub.beers = req.body.beers;
         // save the pub and check for errors
         pub.save(function(err) {
         if (err)
