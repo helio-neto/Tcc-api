@@ -115,7 +115,7 @@ router.put('/api/pubs/beers/:pub_id', (req, res) => {
 // SEARCH WHO HAS THAT BEER BY BEER NAME
 router.get('/api/search/:beer_name', (req, res) => {
     
-    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, 'pubname location',(err, pub)=>{
+    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, (err, pub)=>{
         if (err)
             res.send(err);
         res.json({ result: pub });
