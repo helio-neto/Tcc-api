@@ -7,7 +7,12 @@ let beer = new Schema({
     style: String,
     abv: String,
     ibu: String,
-    obs: String
+    obs: String,
+    price: {
+        half_pint: Number,
+        pint: Number,
+        mass: Number
+    }
 });  
 
 const PubSchema      = new Schema({
@@ -24,6 +29,7 @@ const PubSchema      = new Schema({
     phone: String,
     celphone: String,
     info: String,
+    email: String,
     photo: String,
     created: { type: Date, default: Date.now },
     beers: [beer]

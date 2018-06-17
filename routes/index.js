@@ -55,6 +55,7 @@ router.post('/api/pubs', (req, res) => {
     pub.location.hood = req.body.location.hood;
     pub.ownername = req.body.ownername;
     pub.phone = req.body.phone;
+    pub.email = req.body.email;
     pub.celphone = req.body.celphone;
     pub.info = req.body.info;
     pub.photo = req.body.photo;
@@ -68,25 +69,26 @@ router.post('/api/pubs', (req, res) => {
 });
 // UPDATE/ALTER PUB BY PUB_ID
 router.put('/api/pubs/:pub_id', (req, res) => {
-    Pub.findById(req.params.pub_id, function(err, pub) {
+    Pub.findById(req.params.pub_id, (err, pub) =>{
         if (err)
             res.send(err);
 
-            pub.pubname = req.body.pubname;  
-            pub.location.street = req.body.location.street;
-            pub.location.lat = req.body.location.lat;
-            pub.location.lng = req.body.location.lng;
-            pub.location.city = req.body.location.city;
-            pub.location.uf = req.body.location.uf;
-            pub.location.hood = req.body.location.hood;
-            pub.ownername = req.body.ownername;
-            pub.phone = req.body.phone;
-            pub.celphone = req.body.celphone;
-            pub.info = req.body.info;
-            pub.photo = req.body.photo;
-            pub.beers = req.body.beers;
+        pub.pubname = req.body.pubname;  
+        pub.location.street = req.body.location.street;
+        pub.location.lat = req.body.location.lat;
+        pub.location.lng = req.body.location.lng;
+        pub.location.city = req.body.location.city;
+        pub.location.uf = req.body.location.uf;
+        pub.location.hood = req.body.location.hood;
+        pub.ownername = req.body.ownername;
+        pub.phone = req.body.phone;
+        pub.email = req.body.email;
+        pub.celphone = req.body.celphone;
+        pub.info = req.body.info;
+        pub.photo = req.body.photo;
+        pub.beers = req.body.beers;
         // save the pub and check for errors
-        pub.save(function(err) {
+        pub.save((err)=> {
         if (err)
             res.send(err);
         res.json({ message: 'Pub Modificado!' });
