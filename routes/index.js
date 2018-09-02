@@ -147,7 +147,7 @@ router.post('/api/pubs/login', (req, res) => {
                     status: verify ? "success" : "error", 
                     pub: verify ? pub : null,
                     valid: verify, 
-                    message:"Login efetuado com sucesso"
+                    message:verify ? "Login efetuado com sucesso" : "Senha errada, tente novamente"
                 });
             }else{
                 res.json({status: "error", message: "Verificar/Atualizar Cadastro."});
