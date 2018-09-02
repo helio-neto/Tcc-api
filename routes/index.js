@@ -45,7 +45,7 @@ router.get('/api/pubs/:pub_id', (req, res) => {
     });
 });
 // GET / SEARCH [ PUBS ] BY BEER NAME
-router.get('/api/search/:beer_name', (req, res) => {
+router.get('/api/pubs/search/:beer_name', (req, res) => {
     
     Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, (err, pub)=>{
         if (err)
