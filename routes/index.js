@@ -119,12 +119,13 @@ router.post('/api/pubs/register', (req, res) => {
             pub.salt = crypto.randomBytes(16).toString('hex');
             pub.hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
             //Save the pub and check for errors
-            pub.save((err) => {
+            pub.save((err,pub) => {
                 if (err) {
                     res.status(500).send({status: "error", error: err});
                     return;
+                }else{
+                    res.json({status: "success", message: "Pub criado com sucesso!", pubid: pub._id });
                 }
-                res.json({status: "success", message: "Pub criado com sucesso!" });
             });  
         }
     });
@@ -192,7 +193,7 @@ router.delete('/api/pubs/:pub_id', (req, res) => {
             res.status(500).send({status: "error", error: err});
             return;
         }
-        if(pub.length >0){
+        if(pub.n > 0){
             res.json({status: "success", message: 'Pub deletado com sucesso!' });
         }else{
             res.json({status: "error", message: 'Pub não encontrado!' });
