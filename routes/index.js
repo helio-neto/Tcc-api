@@ -31,26 +31,36 @@ router.get('/api', (req, res) => {
 // GET ALL PUBS
 router.get('/api/pubs', (req, res) => {
     Pub.find((err, pubs) =>{
-        if (err)
-            res.send(err);
+        if (err) {
+            res.status(500).send({status: "error", error: err});
+            return;
+        } 
         res.json(pubs);
     });
 });
 // GET PUB BY ID
 router.get('/api/pubs/:pub_id', (req, res) => {
     Pub.findById(req.params.pub_id, (err, pub) =>{
-        if (err)
-            res.send(err);
-        res.json(pub);
+        if (err){
+            res.status(500).send({status: "error", error: err});
+            return;
+        }
+        if(!pub){
+            res.json({status: "error", message: "Pub não encontrado!" })
+        }else{
+            res.json({status: "success", pub});
+        }   
     });
 });
 // GET / SEARCH [ PUBS ] BY BEER NAME
 router.get('/api/pubs/search/:beer_name', (req, res) => {
     
-    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, (err, pub)=>{
-        if (err)
-            res.send(err);
-        res.json({ result: pub });
+    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, (err, pubs)=>{
+        if (err) {
+            res.status(500).send({status: "error", error: err});
+            return;
+        }
+        res.json({ status: "success", result: pubs });
     });
 });
 // CREATE/ADD/INSERT NEW PUB
@@ -73,8 +83,10 @@ router.post('/api/pubs', (req, res) => {
     pub.beers = req.body.beers;
     // save the pub and check for errors
     pub.save((err) => {
-        if (err)
-            res.send(err);
+        if (err) {
+            res.status(500).send({status: "error", error: err});
+            return;
+        }
         res.json({ message: 'Pub Criado!' });
     });
 });
@@ -83,10 +95,11 @@ router.post('/api/pubs/register', (req, res) => {
     
     Pub.find({'email': req.body.email}, (err, pub)=>{
         if (err) {
-            res.send({error: err});
-        }   
+            res.status(500).send({status: "error", error: err});
+            return;
+        }  
         if(pub.length > 0){
-            res.json({message: "Este e-mail já foi cadastrado."});
+            res.json({status: "error", message: "Seu e-mail já foi cadastrado."});
         }else{
             let pub = new Pub();      
             pub.pubname = req.body.pubname;  
@@ -107,9 +120,11 @@ router.post('/api/pubs/register', (req, res) => {
             pub.hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
             //Save the pub and check for errors
             pub.save((err) => {
-                if (err)
-                    res.send(err);
-                res.json({ message: 'Pub Criado!' });
+                if (err) {
+                    res.status(500).send({status: "error", error: err});
+                    return;
+                }
+                res.json({status: "success", message: "Pub criado com sucesso!" });
             });  
         }
     });
@@ -119,65 +134,83 @@ router.post('/api/pubs/login', (req, res) => {
 
     Pub.find({'email': req.body.email}, (err, pub)=>{
         if (err) {
-            res.send({error: err});
-        }else if (!pub){
-            res.json({message: "Nenhum pub encontrado."});
+            res.status(500).send({status: "error", error: err});
+            return;
         }
-        if(pub.salt){
-            let hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
-            let verify = (hash === pub.hash);    
-            res.json({pub: pub,valid: verify});
+        if (!pub){
+            res.json({status: "error", message: "Nenhum pub encontrado."});
         }else{
-            res.json({message: "Verificar Cadastro."});
-        }         
+            if(pub.salt){
+                let hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
+                let verify = (hash === pub.hash);    
+                res.json({status: "success", pub: pub,valid: verify});
+            }else{
+                res.json({status: "error", message: "Verificar/Atualizar Cadastro."});
+            }
+        }           
     });
 });
 // UPDATE/ALTER PUB BY PUB_ID
 router.put('/api/pubs/:pub_id', (req, res) => {
     Pub.findById(req.params.pub_id, (err, pub) =>{
-        if (err)
-            res.send(err);
-
-        pub.pubname = req.body.pubname;  
-        pub.location.street = req.body.location.street;
-        pub.location.lat = req.body.location.lat;
-        pub.location.lng = req.body.location.lng;
-        pub.location.city = req.body.location.city;
-        pub.location.uf = req.body.location.uf;
-        pub.location.hood = req.body.location.hood;
-        pub.ownername = req.body.ownername;
-        pub.phone = req.body.phone;
-        pub.email = req.body.email;
-        pub.celphone = req.body.celphone;
-        pub.info = req.body.info;
-        pub.photo = req.body.photo;
-        pub.beers = req.body.beers;
-        // save the pub and check for errors
-        pub.save((err)=> {
-        if (err)
-            res.send(err);
-        res.json({ message: 'Pub Modificado!' });
-        });
+        if (err) {
+            res.status(500).send({status: "error", error: err});
+            return;
+        }
+        if(pub){
+            pub.pubname = req.body.pubname;  
+            pub.location.street = req.body.location.street;
+            pub.location.lat = req.body.location.lat;
+            pub.location.lng = req.body.location.lng;
+            pub.location.city = req.body.location.city;
+            pub.location.uf = req.body.location.uf;
+            pub.location.hood = req.body.location.hood;
+            pub.ownername = req.body.ownername;
+            pub.phone = req.body.phone;
+            pub.email = req.body.email;
+            pub.celphone = req.body.celphone;
+            pub.info = req.body.info;
+            pub.photo = req.body.photo;
+            pub.beers = req.body.beers;
+            // save the pub and check for errors
+            pub.save((err)=> {
+                if (err) {
+                    res.status(500).send({status: "error", error: err});
+                    return;
+                }
+                res.json({status: "success", message: 'Pub modificado com sucesso!' });
+            });
+        }else{
+            res.json({status: "error", message: "Nenhum pub encontrado."});
+        }    
    });
 });
-// DELETE/REMOVE PUB BU PUB_ID
+// DELETE/REMOVE PUB BY PUB_ID
 router.delete('/api/pubs/:pub_id', (req, res) => {
     Pub.remove({_id: req.params.pub_id}, (err, pub) => {
-        if (err)
-            res.send(err);
-        res.json({ message: 'Pub deletado!' });
+        if (err) {
+            res.status(500).send({status: "error", error: err});
+            return;
+        }
+        if(pub.length >0){
+            res.json({status: "success", message: 'Pub deletado com sucesso!' });
+        }else{
+            res.json({status: "error", message: 'Pub não encontrado!' });
+        }
+        
     });
 });
 // ADD/INSERT BEER(S) BY PUB_ID
 router.put('/api/pubs/beers/:pub_id', (req, res) => {
-    Pub.update({ _id: req.params.pub_id }, {
-        $push: {  beers: req.body.beers   }
-    },
-    (err, pub) => {
-        if (err)
-            res.send(err);
-        res.json({ message: 'Cerveja(s) adicionada(s)!' });
-    });
+    Pub.update({ _id: req.params.pub_id }, 
+                { $push: {  beers: req.body.beers } },
+                (err, pub) => {
+                    if (err) {
+                        res.status(500).send({status: "error", error: err});
+                        return;
+                    }
+                    res.json({status:"success", message: 'Cerveja(s) adicionada(s) com sucesso!' });
+                });
 });
 
 
