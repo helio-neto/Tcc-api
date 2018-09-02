@@ -137,13 +137,18 @@ router.post('/api/pubs/login', (req, res) => {
             res.status(500).send({status: "error", error: err});
             return;
         }
-        if (!pub){
+        if (pub.length == 0){
             res.json({status: "error", message: "Nenhum pub encontrado."});
         }else{
             if(pub[0].salt){
                 let hash = crypto.pbkdf2Sync(req.body.password, pub[0].salt, 1000, 64, 'sha512').toString('hex');
                 let verify = (hash === pub[0].hash);    
-                res.json({status: "success", pub: verify ? pub:null,valid: verify});
+                res.json({
+                    status: verify ? "success" : "error", 
+                    pub: verify ? pub : null,
+                    valid: verify, 
+                    message:"Login efetuado com sucesso"
+                });
             }else{
                 res.json({status: "error", message: "Verificar/Atualizar Cadastro."});
             }
