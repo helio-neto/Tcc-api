@@ -7,7 +7,12 @@ const BeerSchema      = new Schema({
     style: String,
     abv: String,
     ibu: String,
-    obs: String
+    obs: String,
+    price: {
+        half_pint: Number,
+        pint: Number,
+        mass: Number
+    }
 });
 
 module.exports      = mongoose.model('Beer', BeerSchema);

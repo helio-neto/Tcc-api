@@ -4,5 +4,10 @@
       "user": "apitest",
       "connection": "mongodb://apitest:3mxCD5R3bC0YhBKz@tcccluster-shard-00-00-hfdzl.mongodb.net:27017,tcccluster-shard-00-01-hfdzl.mongodb.net:27017,tcccluster-shard-00-02-hfdzl.mongodb.net:27017/test?ssl=true&replicaSet=TccCluster-shard-0&authSource=admin"
     }
+  },
+  "Auth":{
+    "key":{
+      "value": "BeerLovers"
+    }
   }
 }

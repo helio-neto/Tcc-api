@@ -1,7 +1,9 @@
-'uses scritc'
+'use strict'
 
 const router = require('express').Router();
 const Pub = require('../models/pub');
+const jwt = require('jsonwebtoken');
+const crypto         = require('crypto');
 
 router.use((req,res,next)=>{
     // Origin of access control / CORS
@@ -42,6 +44,15 @@ router.get('/api/pubs/:pub_id', (req, res) => {
         res.json(pub);
     });
 });
+// GET / SEARCH [ PUBS ] BY BEER NAME
+router.get('/api/search/:beer_name', (req, res) => {
+    
+    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, (err, pub)=>{
+        if (err)
+            res.send(err);
+        res.json({ result: pub });
+    });
+});
 // CREATE/ADD/INSERT NEW PUB
 router.post('/api/pubs', (req, res) => {
 
@@ -65,6 +76,60 @@ router.post('/api/pubs', (req, res) => {
         if (err)
             res.send(err);
         res.json({ message: 'Pub Criado!' });
+    });
+});
+// REGISTER PUB
+router.post('/api/pubs/register', (req, res) => {
+    
+    Pub.find({'email': req.body.email}, (err, pub)=>{
+        if (err) {
+            res.send({error: err});
+        }   
+        if(pub.length > 0){
+            res.json({message: "Este e-mail já foi cadastrado."});
+        }else{
+            let pub = new Pub();      
+            pub.pubname = req.body.pubname;  
+            pub.location.street = req.body.location.street;
+            pub.location.lat = req.body.location.lat;
+            pub.location.lng = req.body.location.lng;
+            pub.location.city = req.body.location.city;
+            pub.location.uf = req.body.location.uf;
+            pub.location.hood = req.body.location.hood;
+            pub.ownername = req.body.ownername;
+            pub.phone = req.body.phone;
+            pub.email = req.body.email;
+            pub.celphone = req.body.celphone;
+            pub.info = req.body.info;
+            pub.photo = req.body.photo;
+            pub.beers = req.body.beers;
+            pub.salt = crypto.randomBytes(16).toString('hex');
+            pub.hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
+            //Save the pub and check for errors
+            pub.save((err) => {
+                if (err)
+                    res.send(err);
+                res.json({ message: 'Pub Criado!' });
+            });  
+        }
+    });
+});
+// LOGIN
+router.post('/api/pubs/login', (req, res) => {
+
+    Pub.find({'email': req.body.email}, (err, pub)=>{
+        if (err) {
+            res.send({error: err});
+        }else if (!pub){
+            res.json({message: "Nenhum pub encontrado."});
+        }
+        if(pub.salt){
+            let hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
+            let verify = (hash === pub.hash);    
+            res.json({pub: pub,valid: verify});
+        }else{
+            res.json({message: "Verificar Cadastro."});
+        }         
     });
 });
 // UPDATE/ALTER PUB BY PUB_ID
@@ -114,14 +179,7 @@ router.put('/api/pubs/beers/:pub_id', (req, res) => {
         res.json({ message: 'Cerveja(s) adicionada(s)!' });
     });
 });
-// SEARCH WHO HAS THAT BEER BY BEER NAME
-router.get('/api/search/:beer_name', (req, res) => {
-    
-    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, (err, pub)=>{
-        if (err)
-            res.send(err);
-        res.json({ result: pub });
-    });
-});
+
+
 
 module.exports = router;

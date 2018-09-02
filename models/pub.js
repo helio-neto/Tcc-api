@@ -1,6 +1,8 @@
 'use strict'
 const mongoose       = require('mongoose');
 const Schema         = mongoose.Schema;
+//const crypto         = require('crypto');
+//const jwt = require('jsonwebtoken');
 
 let beer = new Schema({
     name: String,
@@ -32,7 +34,19 @@ const PubSchema      = new Schema({
     email: String,
     photo: String,
     created: { type: Date, default: Date.now },
-    beers: [beer]
+    beers: [beer],
+    hash: String,
+    salt: String,
 });
+
+// PubSchema.methods.setPassword = (password)=>{
+//     this.salt = crypto.randomBytes(16).toString('hex');
+//     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+// }
+
+// PubSchema.methods.validPassword = function(password) {
+//     var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+//     return this.hash === hash;
+// }
 
 module.exports      = mongoose.model('Pub', PubSchema);
