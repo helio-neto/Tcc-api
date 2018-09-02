@@ -132,7 +132,6 @@ router.post('/api/pubs/register', (req, res) => {
 });
 // LOGIN
 router.post('/api/pubs/login', (req, res) => {
-
     Pub.find({'email': req.body.email}, (err, pub)=>{
         if (err) {
             res.status(500).send({status: "error", error: err});
@@ -141,10 +140,10 @@ router.post('/api/pubs/login', (req, res) => {
         if (!pub){
             res.json({status: "error", message: "Nenhum pub encontrado."});
         }else{
-            if(pub.salt){
-                let hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
-                let verify = (hash === pub.hash);    
-                res.json({status: "success", pub: pub,valid: verify});
+            if(pub[0].salt){
+                let hash = crypto.pbkdf2Sync(req.body.password, pub[0].salt, 1000, 64, 'sha512').toString('hex');
+                let verify = (hash === pub[0].hash);    
+                res.json({status: "success", pub: verify ? pub:null,valid: verify});
             }else{
                 res.json({status: "error", message: "Verificar/Atualizar Cadastro."});
             }
