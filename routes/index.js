@@ -138,7 +138,7 @@ router.post('/api/pubs/login', (req, res) => {
             return;
         }
         if (pub.length == 0){
-            res.json({status: "error", message: "Nenhum pub encontrado."});
+            res.json({status: "error", message: "Nenhum pub encontrado com este e-mail."});
         }else{
             if(pub[0].salt){
                 let hash = crypto.pbkdf2Sync(req.body.password, pub[0].salt, 1000, 64, 'sha512').toString('hex');
@@ -147,7 +147,7 @@ router.post('/api/pubs/login', (req, res) => {
                     status: verify ? "success" : "error", 
                     pub: verify ? pub : null,
                     valid: verify, 
-                    message:verify ? "Login efetuado com sucesso" : "Senha errada, tente novamente"
+                    message:verify ? "Login efetuado com sucesso!" : "Senha errada, tente novamente."
                 });
             }else{
                 res.json({status: "error", message: "Verificar/Atualizar Cadastro."});
