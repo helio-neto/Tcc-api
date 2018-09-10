@@ -5,9 +5,13 @@ const config         = require('config');
 const mongoose       = require('mongoose');
 const db             = mongoose.connection;
 const bodyParser     = require('body-parser');
+const passport = require('passport');
 const app            = express();
-const routes = require('./routes');
+const indexroute = require('./routes/index');
+const pubroutes = require('./routes/pub');
 const port = process.env.PORT || 8080;
+require('./models/pub');
+require('./config/passport');
 
 mongoose.connect(config.get('MongoDBAtlas.dbConfig.connection'));
 db.on('error', console.error);
@@ -17,8 +21,10 @@ db.once('open', function() {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
 
-app.use('/', routes);
+app.use('/', indexroute);
+app.use('/api/pubs', pubroutes);
 
 app.listen(port, () => {
   console.log('We are live on ' + port);
