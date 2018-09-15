@@ -2,7 +2,6 @@
 
 const pubrouter = require('express').Router();
 const mongoose = require('mongoose');
-const passport = require('passport');
 const crypto         = require('crypto');
 
 const Pub = mongoose.model('Pub');

@@ -45,29 +45,40 @@ PubSchema.methods.setPassword = (password)=>{
     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
 }
 
-PubSchema.methods.validPassword = function(password) {
+PubSchema.methods.validPassword = (password)=> {
+    console.log("SALT ",this.PubSchema);
     var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
     return this.hash === hash;
 }
-PubSchema.methods.generateJwt = function() {
+
+PubSchema.methods.generateJwt = ()=> {
     var expiry = new Date();
     expiry.setDate(expiry.getDate() + 7);
     const secret = config.get("Auth.key.value");
-  
+    
     return jwt.sign({
-      _id: this._id,
-      email: this.email,
-      name: this.pubname,
-      exp: parseInt(expiry.getTime() / 1000),
+        _id: this._id,
+        email: this.email,
+        name: this.pubname,
+        exp: parseInt(expiry.getTime() / 1000),
     }, secret); 
-  };
+};
 
-  PubSchema.methods.toAuthJSON = function() {
+PubSchema.methods.validateToken = (token)=>{
+    return jwt.verify(token, config.get("Auth.key.value"), (err,decoded)=>{
+        if (err) 
+            return res.status(500).send({ auth: false, status: "error", 
+                                            message: 'Token Inválido.' });
+        res.status(200).send(decoded);
+    })
+};
+
+PubSchema.methods.toAuthJSON = function() {
     return {
-      _id: this._id,
-      email: this.email,
-      token: this.generateJwt(),
+        _id: this._id,
+        email: this.email,
+        token: this.generateJwt(),
     };
-  };
+};
 
 module.exports      = mongoose.model('Pub', PubSchema);
