@@ -3,9 +3,7 @@
 const pubrouter = require('express').Router();
 const mongoose = require('mongoose');
 const crypto         = require('crypto');
-
 const Pub = mongoose.model('Pub');
-
 const auth = require('../auth');
 const authCrtl = require('./../../controllers/authentication');
 

@@ -19,16 +19,12 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
       }
       let hash = crypto.pbkdf2Sync(password, pub.salt, 1000, 64, 'sha512').toString('hex');
       let verify = (hash === pub.hash);
+      // Return if password was wrong
       if(!verify){
         return done(null, false, {
           message: 'Senha errada.Por favor, tente novamente'
         });
       }
-      // if (!pub.validPassword(password)) {
-      //   return done(null, false, {
-      //     message: 'Senha errada.Por favor, tente novamente'
-      //   });
-      // }
       // If credentials are correct, return the user object
       return done(null, pub);
     });
