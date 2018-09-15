@@ -14,7 +14,7 @@ pubrouter.get('/', (req, res) => {
             res.status(500).send({status: "error", message: err});
             return;
         } 
-        res.status(200).json(pubs);
+        res.status(200).json({status: "success", pubs});
     });
 });
 // GET PUB BY ID
@@ -25,7 +25,7 @@ pubrouter.get('/:pub_id', auth.required ,(req, res, next) => {
             return;
         }
         if(!pub){
-            res.status(500).json({status: "error", message: "Pub não encontrado!" })
+            res.status(200).json({status: "error", message: "Pub não encontrado!" })
         }else{
             res.status(200).json({status: "success", pub});
         }   
@@ -51,7 +51,7 @@ pubrouter.post('/register', (req, res) => {
             return;
         }  
         if(pub.length > 0){
-            res.status(500).json({status: "error", message: "Esse e-mail já foi cadastrado."});
+            res.status(200).json({status: "error", message: "Esse e-mail já foi cadastrado."});
         }else{
             let pub = new Pub();      
             pub.pubname = req.body.pubname;  
@@ -84,19 +84,19 @@ pubrouter.post('/register', (req, res) => {
 });
 // LOGIN
 pubrouter.post('/login', (req, res) => {
-    Pub.find({'email': req.body.email}, (err, pub)=>{
+    Pub.findOne({'email': req.body.email}, (err, pub)=>{
         if (err) {
             res.status(500).send({status: "error", message: err});
             return;
         }
         if (pub.length == 0){
-            res.status(500).json({status: "error", message: "Nenhum pub encontrado com este e-mail."});
+            res.status(200).json({status: "error", message: "Nenhum pub encontrado com este e-mail."});
         }else{
-            let pub2 = new Pub(pub);
-            if(pub[0].salt){
-                let hash = crypto.pbkdf2Sync(req.body.password, pub[0].salt, 1000, 64, 'sha512').toString('hex');
-                let verify = (hash === pub[0].hash);    
-                let token = (verify ? pub2.generateJwt() : null);
+            
+            if(pub.salt){
+                let hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
+                let verify = (hash === pub.hash);    
+                let token = (verify ? pub.generateJwt(pub) : null);
                 res.status(200).json({
                     status: verify ? "success" : "error", 
                     pub: verify ? pub : null,
@@ -105,7 +105,7 @@ pubrouter.post('/login', (req, res) => {
                     message: (verify ? "Login efetuado com sucesso!" : "Senha errada, tente novamente.")
                 });
             }else{
-                res.status(500).json({status: "error", message: "Verificar e Atualizar Cadastro."});
+                res.status(200).json({status: "error", message: "Verificar e Atualizar Cadastro."});
             }
         }           
     });
@@ -143,7 +143,7 @@ pubrouter.put('/:pub_id', (req, res) => {
                 res.status(200).json({status: "success", message: 'Pub modificado com sucesso!' });
             });
         }else{
-            res.status(500).json({status: "error", message: "Nenhum pub encontrado."});
+            res.status(200).json({status: "error", message: "Nenhum pub encontrado."});
         }    
    });
 });
@@ -157,7 +157,7 @@ pubrouter.delete('/:pub_id', (req, res) => {
         if(pub.n > 0){
             res.status(200).json({status: "success", message: 'Pub deletado com sucesso!' });
         }else{
-            res.status(500).json({status: "error", message: 'Pub não encontrado!' });
+            res.status(200).json({status: "error", message: 'Pub não encontrado!' });
         }
         
     });
@@ -171,7 +171,7 @@ pubrouter.put('/beers/:pub_id', (req, res) => {
                         res.status(500).send({status: "error", message: err});
                         return;
                     }
-                    res.json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!` });
+                    res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!` });
                 });
 });
 

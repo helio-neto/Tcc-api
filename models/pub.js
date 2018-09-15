@@ -41,25 +41,28 @@ const PubSchema      = new Schema({
 });
 
 PubSchema.methods.setPassword = (password)=>{
-    this.salt = crypto.randomBytes(16).toString('hex');
-    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+    let pub = {
+        salt: crypto.randomBytes(16).toString('hex'),
+        hash: crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex')
+    }
+    return pub;
 }
 
 PubSchema.methods.validPassword = (password)=> {
-    console.log("SALT ",this.PubSchema);
-    var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+    
+    const hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
     return this.hash === hash;
 }
 
-PubSchema.methods.generateJwt = ()=> {
-    var expiry = new Date();
+PubSchema.methods.generateJwt = (pub)=> {
+    const expiry = new Date();
     expiry.setDate(expiry.getDate() + 7);
     const secret = config.get("Auth.key.value");
     
     return jwt.sign({
-        _id: this._id,
-        email: this.email,
-        name: this.pubname,
+        _id: pub._id,
+        email: pub.email,
+        name: pub.pubname,
         exp: parseInt(expiry.getTime() / 1000),
     }, secret); 
 };

@@ -35,9 +35,8 @@ module.exports.register = (req, res) =>{
   pub.salt = crypto.randomBytes(16).toString('hex');
   pub.hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
   pub.save((err,pub) => {
-    if (err) {
-      res.status(500).send({status: "error", message: err});
-      return;
+    if (err) { 
+      return res.status(500).json({status: "error", message: err});
     }else{
       let expiry = new Date();
       expiry.setDate(expiry.getDate() + 7);
@@ -48,7 +47,7 @@ module.exports.register = (req, res) =>{
         name: pub.pubname,
         exp: parseInt(expiry.getTime() / 1000),
       }, secret);
-      res.status(200).json({status: "success", message: "Pub criado com sucesso!", pubid: pub._id, token: token });
+      return res.status(200).json({status: "success", message: "Pub criado com sucesso!", pubid: pub._id, token: token });
     }
   }); 
   // pub.save(function(err) {
@@ -74,14 +73,12 @@ module.exports.login = (req, res) =>{
   }
   
   passport.authenticate('local', (err, pub, info) =>{
-    let token;
     // If Passport throws/catches an error
     if (err) {
-      res.status(404).json({
+      return res.status(404).json({
         "status": "error",
         "message": err
       });
-      return;
     }
     // If a user is found
     if(pub){
@@ -95,16 +92,16 @@ module.exports.login = (req, res) =>{
         name: pub.pubname,
         exp: parseInt(expiry.getTime() / 1000),
       }, secret);
-      
-      // token = pub.generateJwt();
-      res.status(200);
-      res.json({
+    
+      return res.status(200).json({
         "status": "success",
+        "message": "Login efetuado com sucesso!",
+        "pub": pub,
         "token" : token
       });
     } else {
       // If user is not found
-      res.status(500).json({
+      return res.status(200).json({
         "status": "error",
         "message": info.message
       });

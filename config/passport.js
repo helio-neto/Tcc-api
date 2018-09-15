@@ -26,6 +26,8 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)
         });
       }
       // If credentials are correct, return the user object
+      pub.salt = "";
+      pub.hash = "";      
       return done(null, pub);
     });
   }
