@@ -10,14 +10,14 @@ const sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.register = (req, res) =>{
-  
+  // 
   if(!req.body.name || !req.body.email || !req.body.password) {
     sendJSONresponse(res, 400, {
       "message": "All fields required"
     });
     return;
   }
-  
+  // 
   pub.pubname = req.body.pubname;  
   pub.location.street = req.body.location.street;
   pub.location.lat = req.body.location.lat;
@@ -34,6 +34,7 @@ module.exports.register = (req, res) =>{
   pub.beers = req.body.beers;
   pub.salt = crypto.randomBytes(16).toString('hex');
   pub.hash = crypto.pbkdf2Sync(req.body.password, pub.salt, 1000, 64, 'sha512').toString('hex');
+  // 
   pub.save((err,pub) => {
     if (err) { 
       return res.status(500).json({status: "error", message: err});
@@ -50,20 +51,12 @@ module.exports.register = (req, res) =>{
       return res.status(200).json({status: "success", message: "Pub criado com sucesso!", pubid: pub._id, token: token });
     }
   }); 
-  // pub.save(function(err) {
-  //   let token;
-  //   token = pub.generateJwt();
-  //   res.status(200);
-  //   res.json({
-  //     "token" : token
-  //   });
-  // });
   
 };
 
 module.exports.login = (req, res) =>{
   const { body: { pub } } = req;
-  
+  // 
   if(!req.body.email || !req.body.password) {
     sendJSONresponse(res, 400, {
       "status": "error",
@@ -71,7 +64,7 @@ module.exports.login = (req, res) =>{
     });
     return;
   }
-  
+  // 
   passport.authenticate('local', (err, pub, info) =>{
     // If Passport throws/catches an error
     if (err) {
@@ -85,7 +78,6 @@ module.exports.login = (req, res) =>{
       var expiry = new Date();
       expiry.setDate(expiry.getDate() + 7);
       const secret = config.get("Auth.key.value");
-      
       let token =  jwt.sign({
         _id: pub._id,
         email: pub.email,

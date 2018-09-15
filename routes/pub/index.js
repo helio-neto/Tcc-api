@@ -6,7 +6,20 @@ const crypto         = require('crypto');
 const Pub = mongoose.model('Pub');
 const auth = require('../auth');
 const authCrtl = require('./../../controllers/authentication');
-
+// CORS MIDDLEWARE
+pubrouter.use((req,res,next)=>{
+    // Origin of access control / CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Credentials');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // Pass to next layer of middleware
+    next();
+  });
 // GET ALL PUBS
 pubrouter.get('/', (req, res) => {
     Pub.find({},{'salt':0, 'hash':0},(err, pubs) =>{
