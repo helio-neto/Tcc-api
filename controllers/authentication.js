@@ -1,6 +1,7 @@
 const passport = require('passport');
 const mongoose = require('mongoose');
 const Pub = mongoose.model('Pub');
+const Consumer = require('../models/consumer');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 
@@ -9,7 +10,7 @@ const sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 
-module.exports.register = (req, res) =>{
+module.exports.register_pub = (req, res) =>{
   // 
   if(!req.body.name || !req.body.email || !req.body.password) {
     sendJSONresponse(res, 400, {
@@ -54,7 +55,7 @@ module.exports.register = (req, res) =>{
   
 };
 
-module.exports.login = (req, res) =>{
+module.exports.login_pub = (req, res) =>{
   const { body: { pub } } = req;
   // 
   if(!req.body.email || !req.body.password) {
@@ -64,8 +65,9 @@ module.exports.login = (req, res) =>{
     });
     return;
   }
+  
   // 
-  passport.authenticate('local', (err, pub, info) =>{
+  passport.authenticate('pub_local', (err, pub, info) =>{
     // If Passport throws/catches an error
     if (err) {
       return res.status(404).json({
@@ -99,40 +101,6 @@ module.exports.login = (req, res) =>{
       });
     }
   })(req, res);
-  // {
-  
-  //     const { body: { pub } } = req;
-  
-  //     if(!pub.email) {
-  //         return res.status(422).json({
-  //           errors: {
-  //             email: 'is required',
-  //           },
-  //         });
-  //       }
-  
-  //       if(!pub.password) {
-  //         return res.status(422).json({
-  //           errors: {
-  //             password: 'is required',
-  //           },
-  //         });
-  //       }
-  //       return passport.authenticate('local', { session: false }, (err, passportPub, info) => {
-  //         if(err) {
-  //           return next(err);
-  //         }
-  
-  //         if(passportPub) {
-  
-  //           let pubret = new Pub(passportPub);
-  //           pubret.token = pubret.generateJwt();
-  
-  //           return res.json({ pub: pubret.toAuthJSON() });
-  //         }
-  
-  //         return status(400).info;
-  //       })(req, res, next);
-  // });
+
   
 };

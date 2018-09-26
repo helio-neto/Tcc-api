@@ -21,7 +21,7 @@ pubrouter.use((req,res,next)=>{
     next();
   });
 // GET ALL PUBS
-pubrouter.get('/', (req, res) => {
+pubrouter.get('/', auth.optional,(req, res) => {
     Pub.find({},{'salt':0, 'hash':0},(err, pubs) =>{
         if (err) {
             res.status(500).send({status: "error", message: err});
@@ -45,7 +45,7 @@ pubrouter.get('/:pub_id', auth.required ,(req, res, next) => {
     });
 });
 // GET / SEARCH [ PUBS ] BY BEER NAME
-pubrouter.get('/search/:beer_name', (req, res) => {
+pubrouter.get('/search/:beer_name', auth.optional,(req, res) => {
     
     Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, {'salt':0, 'hash':0}, (err, pubs)=>{
         if (err) {
@@ -124,9 +124,9 @@ pubrouter.post('/login', (req, res) => {
     });
 });
 // 
-pubrouter.post('/loginAuth', auth.optional, authCrtl.login);
+pubrouter.post('/loginAuth', auth.optional, authCrtl.login_pub);
 // UPDATE/ALTER PUB BY PUB_ID
-pubrouter.put('/:pub_id', (req, res) => {
+pubrouter.put('/:pub_id', auth.required,(req, res) => {
     Pub.findById(req.params.pub_id, (err, pub) =>{
         if (err) {
             res.status(500).send({status: "error", message: err});
@@ -161,7 +161,7 @@ pubrouter.put('/:pub_id', (req, res) => {
    });
 });
 // DELETE/REMOVE PUB BY PUB_ID
-pubrouter.delete('/:pub_id', (req, res) => {
+pubrouter.delete('/:pub_id', auth.required,(req, res) => {
     Pub.remove({_id: req.params.pub_id}, (err, pub) => {
         if (err) {
             res.status(500).send({status: "error", message: err});
@@ -176,7 +176,7 @@ pubrouter.delete('/:pub_id', (req, res) => {
     });
 });
 // ADD/INSERT BEER(S) BY PUB_ID
-pubrouter.put('/beers/:pub_id', (req, res) => {
+pubrouter.put('/beers/:pub_id', auth.required,(req, res) => {
     Pub.update({ _id: req.params.pub_id }, 
                 { $push: {  beers: req.body.beers } },
                 (err, pub) => {

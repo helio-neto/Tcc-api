@@ -10,9 +10,11 @@ const app            = express();
 
 const indexroute = require('./routes/index');
 const pubroutes = require('./routes/pub');
+const consumerroutes = require('./routes/consumer');
 const port = process.env.PORT || 8080;
 
 require('./models/pub');
+require('./models/consumer');
 require('./config/passport');
 
 mongoose.connect(config.get('MongoDBAtlas.dbConfig.connection'));
@@ -27,6 +29,7 @@ app.use(passport.initialize());
 
 app.use('/', indexroute);
 app.use('/api/pubs', pubroutes);
+app.use('/api/consumer',consumerroutes);
 
 app.listen(port, () => {
   console.log('We are live on ' + port);
