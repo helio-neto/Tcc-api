@@ -47,7 +47,8 @@ pubrouter.get('/:pub_id', auth.required ,(req, res, next) => {
 // GET / SEARCH [ PUBS ] BY BEER NAME
 pubrouter.get('/search/:beer_name', auth.optional,(req, res) => {
     
-    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, {'salt':0, 'hash':0}, (err, pubs)=>{
+    Pub.find({'beers.name': { $regex : new RegExp(req.params.beer_name, "i") }}, 
+                            {'salt':0, 'hash':0}, (err, pubs)=>{
         if (err) {
             res.status(500).send({status: "error", message: err});
             return;
@@ -123,6 +124,8 @@ pubrouter.post('/login', (req, res) => {
         }           
     });
 });
+// 
+pubrouter.post('/registerAuth', auth.optional, authCrtl.register_pub);
 // 
 pubrouter.post('/loginAuth', auth.optional, authCrtl.login_pub);
 // UPDATE/ALTER PUB BY PUB_ID

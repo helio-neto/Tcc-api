@@ -14,10 +14,15 @@ let beer = new Schema({
         pint: Number,
         mass: Number
     }
-});  
+});
+
+let pub = new Schema({
+    _id: Schema.Types.ObjectId,
+    pub_name: String
+})
 
 const Consumerchema      = new Schema({
-    name: String,
+    consumername: String,
     location: {
 		street: String,
 		lat: Number,
@@ -32,7 +37,10 @@ const Consumerchema      = new Schema({
     email: String,
     photo: String,
     created: { type: Date, default: Date.now },
-    beers: [beer],
+    favorites: {
+        beers: [beer],
+        pubs: [pub]
+    },
     hash: String,
     salt: String,
 });

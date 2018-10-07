@@ -24,7 +24,16 @@ consumerrouter.use((req,res,next)=>{
 consumerrouter.get('/', auth.required,(req, res) => {
     res.status(200).json({ message: "Hello Beer Drinker And Lovers!!!" }); 
 });
-
+// 
+consumerrouter.get('/admin/consumers', auth.required,(req,res)=>{
+    Consumer.find({},{'salt':0, 'hash':0},(err, consumers) =>{
+        if (err) {
+            res.status(500).send({status: "error", message: err});
+            return;
+        } 
+        res.status(200).json({status: "success", consumers});
+    });
+})
 // GET USER BY ID
 consumerrouter.get('/:consumer_id', auth.required ,(req, res, next) => {
     Consumer.findById(req.params.consumer_id, {'salt':0, 'hash':0}, (err, consumer) =>{
@@ -33,55 +42,18 @@ consumerrouter.get('/:consumer_id', auth.required ,(req, res, next) => {
             return;
         }
         if(!consumer){
-            res.status(200).json({status: "error", message: "Pub não encontrado!" })
+            res.status(200).json({status: "error", message: "Usuário não encontrado!" })
         }else{
             res.status(200).json({status: "success", consumer});
         }   
     });
 });
-// REGISTER PUB
-consumerrouter.post('/register', (req, res) => {
-    
-    Consumer.find({'email': req.body.email}, (err, consumer)=>{
-        if (err) {
-            res.status(500).send({status: "error", message: err});
-            return;
-        }  
-        if(consumer.length > 0){
-            res.status(200).json({status: "error", message: "Esse e-mail já foi cadastrado."});
-        }else{
-            let consumer = new Consumer();      
-            consumer.name = req.body.name;  
-            consumer.location.street = req.body.location.street;
-            consumer.location.lat = req.body.location.lat;
-            consumer.location.lng = req.body.location.lng;
-            consumer.location.city = req.body.location.city;
-            consumer.location.uf = req.body.location.uf;
-            consumer.location.hood = req.body.location.hood;
-            consumer.phone = req.body.phone;
-            consumer.email = req.body.email;
-            consumer.celphone = req.body.celphone;
-            consumer.info = req.body.info;
-            consumer.photo = req.body.photo;
-            consumer.beers = req.body.beers;
-            consumer.salt = crypto.randomBytes(16).toString('hex');
-            consumer.hash = crypto.pbkdf2Sync(req.body.password, consumer.salt, 1000, 64, 'sha512').toString('hex');
-            //Save the pub and check for errors
-            consumer.save((err,consumer) => {
-                if (err) {
-                    res.status(500).send({status: "error", message: err});
-                    return;
-                }else{
-                    res.status(200).json({status: "success", message: "Pub criado com sucesso!", consumerid: consumer._id });
-                }
-            });  
-        }
-    });
-});
-// 
-consumerrouter.post('/loginAuth', auth.optional, authCrtl.login_pub);
-// UPDATE/ALTER PUB BY PUB_ID
-consumerrouter.put('/:pub_id', auth.required,(req, res) => {
+// REGISTER CONSUMER
+consumerrouter.post('/registerAuth',auth.optional, authCrtl.register_consumer);
+// LOGIN CONSUMER
+consumerrouter.post('/loginAuth', auth.optional, authCrtl.login_consumer);
+// UPDATE/ALTER CONSUMER BY CONSUMER_ID
+consumerrouter.put('/:consumer_id', auth.required,(req, res) => {
     Consumer.findById(req.params.consumer_id, (err, consumer) =>{
         if (err) {
             res.status(500).send({status: "error", message: err});
@@ -97,10 +69,10 @@ consumerrouter.put('/:pub_id', auth.required,(req, res) => {
             consumer.location.hood = req.body.location.hood;
             consumer.phone = req.body.phone;
             pub.email = req.body.email;
-            pub.celphone = req.body.celphone;
-            pub.info = req.body.info;
-            pub.photo = req.body.photo;
-            pub.beers = req.body.beers;
+            consumer.celphone = req.body.celphone;
+            consumer.info = req.body.info;
+            consumer.photo = req.body.photo;
+            consumer.beers = req.body.beers;
             // save the pub and check for errors
             consumer.save((err)=> {
                 if (err) {
@@ -115,7 +87,7 @@ consumerrouter.put('/:pub_id', auth.required,(req, res) => {
    });
 });
 // DELETE/REMOVE USER BY USER_ID
-consumerrouter.delete('/:pub_id', auth.required,(req, res) => {
+consumerrouter.delete('/:consumer_id', auth.required,(req, res) => {
     Consumer.remove({_id: req.params.consumer_id}, (err, consumer) => {
         if (err) {
             res.status(500).send({status: "error", message: err});
@@ -130,7 +102,7 @@ consumerrouter.delete('/:pub_id', auth.required,(req, res) => {
     });
 });
 // ADD/INSERT BEER(S) BY USER_ID
-consumerrouter.put('/beers/:pub_id', auth.required,(req, res) => {
+consumerrouter.put('/beers/:consumer_id', auth.required,(req, res) => {
     Consumer.update({ _id: req.params.consumer_id }, 
                 { $push: {  beers: req.body.beers } },
                 (err, consumer) => {

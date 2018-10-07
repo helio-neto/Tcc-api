@@ -1,0 +1,558 @@
+{
+    "status": "success",
+    "pubs": [
+        {
+            "location": {
+                "street": "Avenida Wenceslau Escobar 2997",
+                "lat": -30.1147013,
+                "lng": -51.2550575,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Cristal"
+            },
+            "created": "2018-06-17T23:26:49.123Z",
+            "beers": [
+                {
+                    "price": {
+                        "half_pint": 10.5,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b26f3fdeeccfa00148a66c6",
+                    "ibu": "48",
+                    "abv": "5,4%",
+                    "style": "Apa",
+                    "name": "Clementina"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 14,
+                        "mass": 16.5
+                    },
+                    "_id": "5b26f3fdeeccfa00148a66c5",
+                    "ibu": "25",
+                    "abv": "4,5%",
+                    "style": "Blond",
+                    "name": "Opa Beer"
+                },
+                {
+                    "price": {
+                        "half_pint": 11.5,
+                        "pint": 15.5,
+                        "mass": 18
+                    },
+                    "_id": "5b26f3fdeeccfa00148a66c4",
+                    "ibu": "58",
+                    "abv": "6,2%",
+                    "style": "Session Ipa",
+                    "name": "Tupiniquim"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 13,
+                        "mass": 15.5
+                    },
+                    "_id": "5b26f3fdeeccfa00148a66c3",
+                    "ibu": "45",
+                    "abv": "5,4%",
+                    "style": "Lager",
+                    "name": "Barco"
+                }
+            ],
+            "_id": "5b26ee39eeccfa00148a66b5",
+            "pubname": "Barril Pub",
+            "ownername": "Asterix",
+            "phone": "(51)3516-2015",
+            "email": "barrilpub@email.com",
+            "celphone": "(51)3516-2015",
+            "info": "informações vao aqui",
+            "photo": "assets/imgs/pubs/barrilpub.png",
+            "__v": 1
+        },
+        {
+            "location": {
+                "street": "José do Patrocínio, 366",
+                "lat": -30.038495,
+                "lng": -51.224454,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Cidade Baixa"
+            },
+            "created": "2018-06-17T23:35:58.276Z",
+            "beers": [
+                {
+                    "price": {
+                        "half_pint": 12.5,
+                        "pint": 15.5,
+                        "mass": 18.5
+                    },
+                    "_id": "5b26f39deeccfa00148a66c2",
+                    "ibu": "15.0",
+                    "abv": "5,0%",
+                    "style": "Saison",
+                    "name": "Nego Véio"
+                },
+                {
+                    "price": {
+                        "half_pint": 13,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b26f39deeccfa00148a66c1",
+                    "ibu": "45.0",
+                    "abv": "5,9%",
+                    "style": "Ipa",
+                    "name": "TNT Milkshake"
+                },
+                {
+                    "price": {
+                        "half_pint": 13.5,
+                        "pint": 16.5,
+                        "mass": 19.5
+                    },
+                    "_id": "5b26f39deeccfa00148a66c0",
+                    "ibu": "60",
+                    "abv": "6,4%",
+                    "style": "Ipa",
+                    "name": "Delta IPA"
+                },
+                {
+                    "price": {
+                        "half_pint": 13,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b26f39deeccfa00148a66bf",
+                    "ibu": "25",
+                    "abv": "8,0%",
+                    "style": "Doppelbock",
+                    "name": "Stambecco Doppelbock"
+                }
+            ],
+            "_id": "5b26f05eeeccfa00148a66ba",
+            "pubname": "Penz Bier - Das Haus",
+            "ownername": "Mr.Penz",
+            "phone": "(51)3516-2015",
+            "email": "penzbier@email.com",
+            "celphone": "(51)3516-2015",
+            "info": "informações vao aqui",
+            "photo": "assets/imgs/pubs/penzbierpub.png",
+            "__v": 1
+        },
+        {
+            "location": {
+                "street": "Rua São Luis, 1101",
+                "lat": -30.0345873,
+                "lng": -51.2111096,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Bom Fim"
+            },
+            "created": "2018-06-23T10:15:11.629Z",
+            "beers": [
+                {
+                    "price": {
+                        "half_pint": 10.5,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b2e225c88db5a00143495ee",
+                    "ibu": "48",
+                    "abv": "5,4%",
+                    "style": "Apa",
+                    "name": "Clementina"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 14,
+                        "mass": 16.5
+                    },
+                    "_id": "5b2e225c88db5a00143495ed",
+                    "ibu": "25",
+                    "abv": "4,5%",
+                    "style": "Blond",
+                    "name": "Opa Beer"
+                },
+                {
+                    "price": {
+                        "half_pint": 11.5,
+                        "pint": 15.5,
+                        "mass": 18
+                    },
+                    "_id": "5b2e225c88db5a00143495ec",
+                    "ibu": "58",
+                    "abv": "6,2%",
+                    "style": "Ipa",
+                    "name": "Kojak"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 13,
+                        "mass": 15.5
+                    },
+                    "_id": "5b2e225c88db5a00143495eb",
+                    "ibu": "45",
+                    "abv": "5,4%",
+                    "style": "Lager",
+                    "name": "Barco"
+                }
+            ],
+            "_id": "5b2e1daf88db5a00143495d7",
+            "pubname": "Lagom Brewery & Pub",
+            "ownername": "Lagom",
+            "phone": "(51)3062-5045",
+            "email": "lagompub@email.com",
+            "celphone": "(51)3062-5045",
+            "info": "informações vao aqui",
+            "photo": "assets/imgs/pubs/lagompub.jpg",
+            "__v": 1
+        },
+        {
+            "location": {
+                "street": "Rua São Luis, 1101",
+                "lat": -30.052401,
+                "lng": -51.2035647,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Santana"
+            },
+            "created": "2018-06-23T10:20:17.803Z",
+            "beers": [
+                {
+                    "price": {
+                        "half_pint": 10.5,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b2e1ee188db5a00143495e0",
+                    "ibu": "48",
+                    "abv": "5,4%",
+                    "style": "Apa",
+                    "name": "Clementina"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 14,
+                        "mass": 16.5
+                    },
+                    "_id": "5b2e1ee188db5a00143495df",
+                    "ibu": "25",
+                    "abv": "4,5%",
+                    "style": "Blond",
+                    "name": "Opa Beer"
+                },
+                {
+                    "price": {
+                        "half_pint": 11.5,
+                        "pint": 15.5,
+                        "mass": 18
+                    },
+                    "_id": "5b2e1ee188db5a00143495de",
+                    "ibu": "58",
+                    "abv": "6,2%",
+                    "style": "Ipa",
+                    "name": "Kojak"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 13,
+                        "mass": 15.5
+                    },
+                    "_id": "5b2e1ee188db5a00143495dd",
+                    "ibu": "45",
+                    "abv": "5,4%",
+                    "style": "Lager",
+                    "name": "Abadessa"
+                }
+            ],
+            "_id": "5b2e1ee188db5a00143495dc",
+            "pubname": "Cuca Haus GastroPub",
+            "ownername": "Lagom",
+            "phone": "(51)3062-5045",
+            "email": "cucahauspub@email.com",
+            "celphone": "(51)3062-5045",
+            "info": "informações vao aqui",
+            "photo": "assets/imgs/pubs/cucahauspub.png",
+            "__v": 0
+        },
+        {
+            "location": {
+                "street": "Rua José do Patrocínio, 527",
+                "lat": -30.0397881,
+                "lng": -51.2257621,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Cidade Baixa"
+            },
+            "created": "2018-06-23T10:23:51.876Z",
+            "beers": [
+                {
+                    "price": {
+                        "half_pint": 10.5,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b2e1fb788db5a00143495e5",
+                    "ibu": "48",
+                    "abv": "5,4%",
+                    "style": "Apa",
+                    "name": "Clementina"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 14,
+                        "mass": 16.5
+                    },
+                    "_id": "5b2e1fb788db5a00143495e4",
+                    "ibu": "25",
+                    "abv": "4,5%",
+                    "style": "Blond",
+                    "name": "Opa Beer"
+                },
+                {
+                    "price": {
+                        "half_pint": 11.5,
+                        "pint": 15.5,
+                        "mass": 18
+                    },
+                    "_id": "5b2e1fb788db5a00143495e3",
+                    "ibu": "58",
+                    "abv": "6,2%",
+                    "style": "Ipa",
+                    "name": "Kojak"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 13,
+                        "mass": 15.5
+                    },
+                    "_id": "5b2e1fb788db5a00143495e2",
+                    "ibu": "45",
+                    "abv": "5,4%",
+                    "style": "Lager",
+                    "name": "Abadessa"
+                }
+            ],
+            "_id": "5b2e1fb788db5a00143495e1",
+            "pubname": "Apolinário Bar",
+            "ownername": "Apolinário",
+            "phone": "(51)3062-5045",
+            "email": "apolinariopub@email.com",
+            "celphone": "(51)3062-5045",
+            "info": "informações vao aqui",
+            "photo": "assets/imgs/pubs/apolinariopub.jpg",
+            "__v": 0
+        },
+        {
+            "location": {
+                "street": "Travessa do Carmo, 76",
+                "lat": -30.0384388,
+                "lng": -51.2280619,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Cidade Baixa"
+            },
+            "created": "2018-06-23T10:26:24.991Z",
+            "beers": [
+                {
+                    "price": {
+                        "half_pint": 10.5,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b2e205088db5a00143495ea",
+                    "ibu": "48",
+                    "abv": "5,4%",
+                    "style": "Apa",
+                    "name": "Clementina"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 14,
+                        "mass": 16.5
+                    },
+                    "_id": "5b2e205088db5a00143495e9",
+                    "ibu": "25",
+                    "abv": "4,5%",
+                    "style": "Blond",
+                    "name": "Opa Beer"
+                },
+                {
+                    "price": {
+                        "half_pint": 11.5,
+                        "pint": 15.5,
+                        "mass": 18
+                    },
+                    "_id": "5b2e205088db5a00143495e8",
+                    "ibu": "58",
+                    "abv": "6,2%",
+                    "style": "Ipa",
+                    "name": "Kojak"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 13,
+                        "mass": 15.5
+                    },
+                    "_id": "5b2e205088db5a00143495e7",
+                    "ibu": "45",
+                    "abv": "5,4%",
+                    "style": "Lager",
+                    "name": "Abadessa"
+                }
+            ],
+            "_id": "5b2e205088db5a00143495e6",
+            "pubname": "Malvadeza Pub II",
+            "ownername": "Malvadeza",
+            "phone": "(51)3062-5045",
+            "email": "malvadezapub@email.com",
+            "celphone": "(51)3062-5045",
+            "info": "informações vao aqui",
+            "photo": "assets/imgs/pubs/malvadezapub.jpg",
+            "__v": 0
+        },
+        {
+            "location": {
+                "street": "Av. Wenceslau Escobar, 1643 - Tristeza, Porto Alegre - RS, 91900-000",
+                "lat": -30.1034413,
+                "lng": -51.2544148,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Cristal"
+            },
+            "created": "2018-09-02T12:18:58.029Z",
+            "beers": [
+                {
+                    "price": {
+                        "half_pint": 10.5,
+                        "pint": 15,
+                        "mass": 18.5
+                    },
+                    "_id": "5b8bd532f328e9220489ed8e",
+                    "ibu": "48",
+                    "abv": "5,4%",
+                    "style": "Apa",
+                    "name": "Clementina"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 14,
+                        "mass": 16.5
+                    },
+                    "_id": "5b8bd532f328e9220489ed8d",
+                    "ibu": "25",
+                    "abv": "4,5%",
+                    "style": "Blond",
+                    "name": "Opa Beer"
+                },
+                {
+                    "price": {
+                        "half_pint": 11.5,
+                        "pint": 15.5,
+                        "mass": 18
+                    },
+                    "_id": "5b8bd532f328e9220489ed8c",
+                    "ibu": "58",
+                    "abv": "6,2%",
+                    "style": "Ipa",
+                    "name": "Kojak"
+                },
+                {
+                    "price": {
+                        "half_pint": 10,
+                        "pint": 13,
+                        "mass": 15.5
+                    },
+                    "_id": "5b8bd532f328e9220489ed8b",
+                    "ibu": "45",
+                    "abv": "5,4%",
+                    "style": "Lager",
+                    "name": "Barco"
+                }
+            ],
+            "_id": "5b8bd532f328e9220489ed8a",
+            "pubname": "Pedrini zona sul",
+            "ownername": "PEdro",
+            "phone": "(51)3062-5045",
+            "email": "pedrinizs@email.com",
+            "celphone": "(51)3062-5045",
+            "info": "informações vao aqui",
+            "photo": "assets/imgs/pubs/lagompub.jpg",
+            "__v": 0
+        },
+        {
+            "location": {
+                "street": "Rua Folha da tarde, 124 - 91910-710",
+                "lat": -30.098709,
+                "lng": -51.246806900000024,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Cristal"
+            },
+            "created": "2018-09-07T17:00:35.135Z",
+            "beers": [],
+            "_id": "5b92aeb3be9b630014dcdd10",
+            "pubname": "Gerson´s Pub",
+            "ownername": "Gerson",
+            "phone": "51-991917876",
+            "email": "gerson@email.com",
+            "celphone": "51-991919191",
+            "info": "Esse pub tem informações",
+            "photo": "assets/imgs/pubs/lagompub.jpg",
+            "__v": 0
+        },
+        {
+            "location": {
+                "street": "Rua princesa isabel, 285 porto alegre - 90450-190",
+                "lat": -30.0497379,
+                "lng": -51.2102069,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Santana"
+            },
+            "created": "2018-09-19T18:07:04.868Z",
+            "beers": [],
+            "_id": "5ba290488dfa6a0013755d54",
+            "pubname": "Pub do João",
+            "ownername": "Joãozinho silva",
+            "phone": "51-33445566",
+            "email": "joaozinho@email.com",
+            "celphone": "51-99887766",
+            "info": "asdasdasdasdasd",
+            "photo": "assets/imgs/pubs/joystorm.jpg",
+            "__v": 0
+        },
+        {
+            "location": {
+                "street": "Rua princesa isabel, 845 - porto alegre - 90160-091",
+                "lat": -30.0468714,
+                "lng": -51.20549700000004,
+                "city": "Porto Alegre",
+                "uf": "RS",
+                "hood": "Santana"
+            },
+            "created": "2018-10-01T17:01:50.863Z",
+            "beers": [],
+            "_id": "5bb252fef4d22a0013fef1d1",
+            "pubname": "WebPub",
+            "ownername": "Jorge",
+            "phone": "51-33445566",
+            "email": "webpub@email.com",
+            "celphone": "51-99887766",
+            "info": "asdasdasdasdasdasdasdasdasdasdasdasd",
+            "photo": "assets/imgs/pubs/default.jpg",
+            "__v": 0
+        }
+    ]
+}
