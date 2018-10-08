@@ -19,12 +19,12 @@ consumerrouter.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Credentials', true);
     // Pass to next layer of middleware
     next();
-  });
+});
 // 
 consumerrouter.get('/', auth.required,(req, res) => {
     res.status(200).json({ message: "Hello Beer Drinker And Lovers!!!" }); 
 });
-// 
+// ADMIN ROUTE TO VIEW CONSUMERS LIST
 consumerrouter.get('/admin/consumers', auth.required,(req,res)=>{
     Consumer.find({},{'salt':0, 'hash':0},(err, consumers) =>{
         if (err) {
@@ -46,6 +46,22 @@ consumerrouter.get('/:consumer_id', auth.required ,(req, res, next) => {
         }else{
             res.status(200).json({status: "success", consumer});
         }   
+    });
+});
+// 
+consumerrouter.post('/upload', (req, res)=> {
+    if (!req.files)
+        return res.status(400).send({status: "error", message: 'No files were uploaded.'});
+    
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let sampleFile = req.files.photo;
+    
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv('/assets/imgs/consumers/filename.jpg', function(err) {
+        if (err)
+            return res.status(500).send(err);
+        res.status(200).json({status: "success", message:'File uploaded!'});
+        // res.send('File uploaded!');
     });
 });
 // REGISTER CONSUMER
@@ -84,7 +100,7 @@ consumerrouter.put('/:consumer_id', auth.required,(req, res) => {
         }else{
             res.status(200).json({status: "error", message: "Nenhum usuário encontrado."});
         }    
-   });
+    });
 });
 // DELETE/REMOVE USER BY USER_ID
 consumerrouter.delete('/:consumer_id', auth.required,(req, res) => {
@@ -104,14 +120,14 @@ consumerrouter.delete('/:consumer_id', auth.required,(req, res) => {
 // ADD/INSERT BEER(S) BY USER_ID
 consumerrouter.put('/beers/:consumer_id', auth.required,(req, res) => {
     Consumer.update({ _id: req.params.consumer_id }, 
-                { $push: {  beers: req.body.beers } },
-                (err, consumer) => {
-                    if (err) {
-                        res.status(500).send({status: "error", message: err});
-                        return;
-                    }
-                    res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!` });
-                });
-});
-
-module.exports = consumerrouter;
+        { $push: {  beers: req.body.beers } },
+        (err, consumer) => {
+            if (err) {
+                res.status(500).send({status: "error", message: err});
+                return;
+            }
+            res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!` });
+        });
+    });
+    
+    module.exports = consumerrouter;
