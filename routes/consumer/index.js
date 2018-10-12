@@ -51,7 +51,7 @@ consumerrouter.get('/:consumer_id', auth.required ,(req, res, next) => {
 // 
 consumerrouter.post('/upload', (req, res)=> {
     if (!req.files)
-        return res.status(400).send({status: "error", message: 'No files were uploaded.'});
+    return res.status(400).send({status: "error", message: 'No files were uploaded.'});
     
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     let sampleFile = req.files.photo;
@@ -59,7 +59,7 @@ consumerrouter.post('/upload', (req, res)=> {
     // Use the mv() method to place the file somewhere on your server
     sampleFile.mv('/assets/imgs/consumers/filename.jpg', function(err) {
         if (err)
-            return res.status(500).send(err);
+        return res.status(500).send(err);
         res.status(200).json({status: "success", message:'File uploaded!'});
         // res.send('File uploaded!');
     });
@@ -70,32 +70,31 @@ consumerrouter.post('/registerAuth',auth.optional, authCrtl.register_consumer);
 consumerrouter.post('/loginAuth', auth.optional, authCrtl.login_consumer);
 // UPDATE/ALTER CONSUMER BY CONSUMER_ID
 consumerrouter.put('/:consumer_id', auth.required,(req, res) => {
-    Consumer.findById(req.params.consumer_id, (err, consumer) =>{
+    Consumer.findById(req.params.consumer_id, {'salt':0, 'hash':0}, (err, consumer) =>{
         if (err) {
             res.status(500).send({status: "error", message: err});
             return;
         }
         if(consumer){
-            consumer.name = req.body.name;  
-            consumer.location.street = req.body.location.street;
-            consumer.location.lat = req.body.location.lat;
-            consumer.location.lng = req.body.location.lng;
-            consumer.location.city = req.body.location.city;
-            consumer.location.uf = req.body.location.uf;
-            consumer.location.hood = req.body.location.hood;
-            consumer.phone = req.body.phone;
-            pub.email = req.body.email;
-            consumer.celphone = req.body.celphone;
-            consumer.info = req.body.info;
-            consumer.photo = req.body.photo;
-            consumer.beers = req.body.beers;
-            // save the pub and check for errors
-            consumer.save((err)=> {
+            consumer.consumername = (req.body.consumername) ? req.body.consumername : consumer.consumername;  
+            consumer.location.street = (req.body.location.street) ? req.body.location.street : consumer.location.street;
+            consumer.location.lat = (req.body.location.lat) ? req.body.location.lat : consumer.location.lat;
+            consumer.location.lng = (req.body.location.lng) ? req.body.location.lng : consumer.location.lng;
+            consumer.location.city = (req.body.location.city) ? req.body.location.city : consumer.location.city;
+            consumer.location.uf = (req.body.location.uf) ? req.body.location.uf : consumer.location.uf;
+            consumer.location.hood = (req.body.location.hood) ? req.body.location.hood : consumer.location.hood;
+            consumer.phone = (req.body.phone) ? req.body.phone : consumer.phone;
+            consumer.email = (req.body.email) ? req.body.email : consumer.email;
+            consumer.celphone = (req.body.celphone) ? req.body.celphone : consumer.celphone;
+            consumer.info = (req.body.info) ? req.body.info : consumer.info;
+            consumer.photo = (req.body.photo) ? req.body.photo : consumer.photo;
+            // save the consumer and check for errors
+            consumer.save((err, updatedConsumer)=> {
                 if (err) {
                     res.status(500).send({status: "error", message: err});
                     return;
                 }
-                res.status(200).json({status: "success", message: 'Usuário modificado com sucesso!' });
+                res.status(200).json({status: "success", message: 'Usuário modificado com sucesso!', consumer: updatedConsumer });
             });
         }else{
             res.status(200).json({status: "error", message: "Nenhum usuário encontrado."});

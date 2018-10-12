@@ -5,9 +5,12 @@ const config = require('config');
 
 const getTokenFromHeaders = (req) => {
   const { headers: { authorization } } = req;
-
+  
   if(authorization && authorization.split(' ')[0] === 'Token') {
     return authorization.split(' ')[1];
+  }
+  if(req.body.token){
+    return req.body.token;
   }
   return null;
 };
