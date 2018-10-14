@@ -26,7 +26,7 @@ consumerrouter.get('/', auth.required,(req, res) => {
 });
 // ADMIN ROUTE TO VIEW CONSUMERS LIST
 consumerrouter.get('/admin/consumers', auth.required,(req,res)=>{
-    Consumer.find({},{'salt':0, 'hash':0},(err, consumers) =>{
+    Consumer.find({},(err, consumers) =>{
         if (err) {
             res.status(500).send({status: "error", message: err});
             return;
@@ -70,7 +70,7 @@ consumerrouter.post('/registerAuth',auth.optional, authCrtl.register_consumer);
 consumerrouter.post('/loginAuth', auth.optional, authCrtl.login_consumer);
 // UPDATE/ALTER CONSUMER BY CONSUMER_ID
 consumerrouter.put('/:consumer_id', auth.required,(req, res) => {
-    Consumer.findById(req.params.consumer_id, {'salt':0, 'hash':0}, (err, consumer) =>{
+    Consumer.findById(req.params.consumer_id, (err, consumer) =>{
         if (err) {
             res.status(500).send({status: "error", message: err});
             return;
