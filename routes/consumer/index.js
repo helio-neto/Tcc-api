@@ -13,7 +13,7 @@ consumerrouter.use((req,res,next)=>{
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Credentials');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization, Accept, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Credentials');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -26,7 +26,7 @@ consumerrouter.get('/', auth.required,(req, res) => {
 });
 // ADMIN ROUTE TO VIEW CONSUMERS LIST
 consumerrouter.get('/admin/consumers', auth.required,(req,res)=>{
-    Consumer.find({},(err, consumers) =>{
+    Consumer.find({},{'salt':0, 'hash':0},(err, consumers) =>{
         if (err) {
             res.status(500).send({status: "error", message: err});
             return;
@@ -128,16 +128,16 @@ consumerrouter.put('/favorites/pubs/:consumer_id', auth.required,(req, res) => {
             }
         }
     ).then((newConsumer)=>{
-        console.log("newconsumer",newConsumer.favorites.pubs);
-        res.status(200).json({status:"success", message: `Estabelecimento(s) adicionada(s) com sucesso!`, consumer: newConsumer });
+        console.log("New Favorites ->",newConsumer.favorites);
+        res.status(200).json({status:"success", message: `Estabelecimento(s) adicionado(s) com sucesso!`, favorites: newConsumer.favorites });
     }).catch((error)=>{
         res.status(500).send({status: "error", message: error});
     });
 });
 // DELETE PUBS(S) FROM FAVORITES BY USER_ID
 consumerrouter.delete('/favorites/pubs/:consumer_id', auth.required,(req, res) => {
-    Consumer.update({ _id: req.params.consumer_id}, 
-        { $pull: { "favorites.pubs" : { _id: req.body.pub_id} } },
+    Consumer.findOneAndUpdate({ _id: req.params.consumer_id}, 
+        { $pull: { "favorites.pubs" : { _id: (req.body._id) ? req.body._id : req.body.pubs[0]._id} } },
         (err, consumer) => {
             console.log("consumer", consumer);
             if (err) {
@@ -147,7 +147,7 @@ consumerrouter.delete('/favorites/pubs/:consumer_id', auth.required,(req, res) =
         }, {new: true, multi: true}
     ).then((newConsumer)=>{
         console.log("consumer pull",newConsumer);
-        res.status(200).json({status:"success", message: `Estabelecimento(s) removido(s) com sucesso!`, consumer: newConsumer });
+        res.status(200).json({status:"success", message: `Estabelecimento(s) removido(s) com sucesso!`, favorites: newConsumer.favorites });
     }).catch((error)=>{
         res.status(500).send({status: "error", message: error});
     });
@@ -164,15 +164,15 @@ consumerrouter.put('/favorites/beers/:consumer_id', auth.required,(req, res) => 
             }
         }
     ).then((newConsumer)=>{
-        res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!`, consumer: newConsumer });
+        res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!`, favorites: newConsumer.favorites });
     }).catch((error)=>{
         res.status(500).send({status: "error", message: error});
     });
 });
 // ADD/INSERT PUBS(S) TO FAVORITES BY USER_ID
 consumerrouter.delete('/favorites/beers/:consumer_id', auth.required,(req, res) => {
-    Consumer.update({ _id: req.params.consumer_id}, 
-        { $pull: { "favorites.beers" : { _id: req.body.beer_id} } },
+    Consumer.updfindOneAndUpdateate({ _id: req.params.consumer_id}, 
+        { $pull: { "favorites.beers" : { _id: (req.body._id) ? req.body._id : req.body.beers[0]._id} } },
         (err, consumer) => {
             console.log("consumer", consumer);
             if (err) {
@@ -182,7 +182,7 @@ consumerrouter.delete('/favorites/beers/:consumer_id', auth.required,(req, res) 
         }, {new: true, multi: true}
     ).then((newConsumer)=>{
         console.log("consumer pull",newConsumer);
-        res.status(200).json({status:"success", message: `Cerveja(s) removida(s) com sucesso!`, consumer: newConsumer });
+        res.status(200).json({status:"success", message: `Cerveja(s) removida(s) com sucesso!`, favorites: newConsumer.favorites });
     }).catch((error)=>{
         res.status(500).send({status: "error", message: error});
     });
