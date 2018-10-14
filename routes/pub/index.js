@@ -180,15 +180,109 @@ pubrouter.delete('/:pub_id', auth.required,(req, res) => {
 });
 // ADD/INSERT BEER(S) BY PUB_ID
 pubrouter.put('/beers/:pub_id', auth.required,(req, res) => {
-    Pub.update({ _id: req.params.pub_id }, 
-                { $push: {  beers: req.body.beers } },
+    Pub.findOneAndUpdate({ _id: req.params.pub_id }, 
+                { $addToSet: {  beers: req.body.beers } },
+                { new: true, runValidators: true},
                 (err, pub) => {
                     if (err) {
                         res.status(500).send({status: "error", message: err});
                         return;
                     }
-                    res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!` });
-                });
+                    if(pub){
+                        // console.log("PUB_",pub.beers);
+                    }
+                }
+    ).then((newBeer)=>{
+        // console.log("newBeer",newBeer.beers);
+        res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!`, beers: newBeer.beers });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
+});
+// EDIT BEER
+pubrouter.patch('/beers/:pub_id', auth.required,(req, res) => {
+    console.log("REQ",req.body.beer._id);
+    Pub.findOneAndUpdate({ _id: req.params.pub_id, "beers._id": req.body.beer._id }, 
+                { $set: {  "beers.$": req.body.beer } },
+                { new: true, runValidators: true},
+                (err, beers) => {
+                    if (err) {
+                        res.status(500).send({status: "error", message: err});
+                        return;
+                    }
+                    if(beers){
+                        // console.log("PUB_",pub.beers);
+                    }
+                }
+    ).then((newBeer)=>{
+        // console.log("newBeer",newBeer.beers);
+        res.status(200).json({status:"success", message: `Cerveja alterada com sucesso!`, beers: newBeer.beers });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
+});
+// DELETE BEER(S) FROM BEER MENY BY PUB_ID && BEER_ID
+pubrouter.delete('/beers/:pub_id', auth.required,(req, res) => {
+    Pub.update({ _id: req.params.pub_id }, 
+        { $pull: { beers:{ _id : req.body.beer_id} } },
+        {new: true, multi: true},
+        (err, beers) => {
+            if (err) {
+                res.status(500).send({status: "error", message: err});
+                return;
+            }
+            if(beers){
+                console.log("beers delete", beers);
+            }
+        }
+    ).then((newBeers)=>{
+        console.log("newBeers pull",newBeers);
+        res.status(200).json({status:"success", message: `Cerveja(s) removida(s) com sucesso!`, beers: newBeers });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
+});
+// ADD COMMENT TO PUB BY PUB_ID
+pubrouter.put('/comments/:pub_id', auth.required,(req, res) => {
+    Pub.findOneAndUpdate({ _id: req.params.pub_id},
+        { $addToSet: { comments: req.body.comment} },
+        { new: true, runValidators: true},
+        (err, pub) => {
+            if (err) {
+                res.status(500).send({status: "error", message: err});
+                return;
+            }
+            if(pub){
+                console.log("PUB_",pub);
+            }
+        }
+    ).then((newcomment)=>{
+        console.log("newcomment",newcomment);
+        res.status(200).json({status:"success", message: `Comentário(s) adicionado(s) com sucesso!`, pub: newcomment });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
+});
+// DELETE COMENT(S) FROM FAVORITES BY PUB_ID && COMMENT_ID
+pubrouter.delete('/comments/:pub_id', auth.required,(req, res) => {
+    Pub.update({ _id: req.params.pub_id }, 
+        { $pull: { comments:{ _id : req.body.comment_id} } },
+        {new: true, multi: true},
+        (err, comment) => {
+            if (err) {
+                res.status(500).send({status: "error", message: err});
+                return;
+            }
+            if(comment){
+                console.log("comment", comment);
+            }
+        }
+    ).then((newComment)=>{
+        console.log("newComment pull",newComment);
+        res.status(200).json({status:"success", message: `Comentário(s) removido(s) com sucesso!`, pub: newComment });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
 });
 
 module.exports = pubrouter;

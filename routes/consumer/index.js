@@ -116,17 +116,76 @@ consumerrouter.delete('/:consumer_id', auth.required,(req, res) => {
         
     });
 });
-// ADD/INSERT BEER(S) BY USER_ID
-consumerrouter.put('/beers/:consumer_id', auth.required,(req, res) => {
-    Consumer.update({ _id: req.params.consumer_id }, 
-        { $push: {  beers: req.body.beers } },
+// ADD/INSERT PUBS(S) TO FAVORITES BY USER_ID
+consumerrouter.put('/favorites/pubs/:consumer_id', auth.required,(req, res) => {
+    Consumer.findOneAndUpdate({ _id: req.params.consumer_id},
+        { $addToSet: { "favorites.pubs": req.body.pubs} },
+        { new: true, runValidators: true},
         (err, consumer) => {
             if (err) {
                 res.status(500).send({status: "error", message: err});
                 return;
             }
-            res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!` });
-        });
+        }
+    ).then((newConsumer)=>{
+        console.log("newconsumer",newConsumer.favorites.pubs);
+        res.status(200).json({status:"success", message: `Estabelecimento(s) adicionada(s) com sucesso!`, consumer: newConsumer });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
     });
+});
+// DELETE PUBS(S) FROM FAVORITES BY USER_ID
+consumerrouter.delete('/favorites/pubs/:consumer_id', auth.required,(req, res) => {
+    Consumer.update({ _id: req.params.consumer_id}, 
+        { $pull: { "favorites.pubs" : { _id: req.body.pub_id} } },
+        (err, consumer) => {
+            console.log("consumer", consumer);
+            if (err) {
+                res.status(500).send({status: "error", message: err});
+                return;
+            }
+        }, {new: true, multi: true}
+    ).then((newConsumer)=>{
+        console.log("consumer pull",newConsumer);
+        res.status(200).json({status:"success", message: `Estabelecimento(s) removido(s) com sucesso!`, consumer: newConsumer });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
+});
+// ADD/INSERT BEERS(S) TO FAVORITES BY USER_ID
+consumerrouter.put('/favorites/beers/:consumer_id', auth.required,(req, res) => {
+    Consumer.findOneAndUpdate({ _id: req.params.consumer_id}, 
+        { $addToSet: { "favorites.beers": req.body.beers} },
+        { new: true, runValidators: true },
+        (err, consumer) => {
+            if (err) {
+                res.status(500).send({status: "error", message: err});
+                return;
+            }
+        }
+    ).then((newConsumer)=>{
+        res.status(200).json({status:"success", message: `Cerveja(s) adicionada(s) com sucesso!`, consumer: newConsumer });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
+});
+// ADD/INSERT PUBS(S) TO FAVORITES BY USER_ID
+consumerrouter.delete('/favorites/beers/:consumer_id', auth.required,(req, res) => {
+    Consumer.update({ _id: req.params.consumer_id}, 
+        { $pull: { "favorites.beers" : { _id: req.body.beer_id} } },
+        (err, consumer) => {
+            console.log("consumer", consumer);
+            if (err) {
+                res.status(500).send({status: "error", message: err});
+                return;
+            }
+        }, {new: true, multi: true}
+    ).then((newConsumer)=>{
+        console.log("consumer pull",newConsumer);
+        res.status(200).json({status:"success", message: `Cerveja(s) removida(s) com sucesso!`, consumer: newConsumer });
+    }).catch((error)=>{
+        res.status(500).send({status: "error", message: error});
+    });
+});
     
-    module.exports = consumerrouter;
+module.exports = consumerrouter;

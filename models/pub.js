@@ -18,6 +18,12 @@ let beer = new Schema({
     }
 });  
 
+let comment = new Schema({
+    user: String,
+    message: String,
+    created: { type: Date, default: Date.now } 
+})
+
 const PubSchema      = new Schema({
     pubname: String,
     location: {
@@ -36,6 +42,7 @@ const PubSchema      = new Schema({
     photo: String,
     created: { type: Date, default: Date.now },
     beers: [beer],
+    comments: [comment],
     hash: String,
     salt: String,
 });

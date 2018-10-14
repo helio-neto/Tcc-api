@@ -8,17 +8,13 @@ let beer = new Schema({
     style: String,
     abv: String,
     ibu: String,
-    obs: String,
-    price: {
-        half_pint: Number,
-        pint: Number,
-        mass: Number
-    }
+    obs: String
 });
 
 let pub = new Schema({
     _id: Schema.Types.ObjectId,
-    pub_name: String
+    name: String,
+    photo: String
 })
 
 const Consumerchema      = new Schema({
