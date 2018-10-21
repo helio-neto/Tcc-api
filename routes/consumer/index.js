@@ -169,9 +169,9 @@ consumerrouter.put('/favorites/beers/:consumer_id', auth.required,(req, res) => 
         res.status(500).send({status: "error", message: error});
     });
 });
-// ADD/INSERT PUBS(S) TO FAVORITES BY USER_ID
+// DELETE BEER(S) TO FAVORITES BY USER_ID
 consumerrouter.delete('/favorites/beers/:consumer_id', auth.required,(req, res) => {
-    Consumer.updfindOneAndUpdateate({ _id: req.params.consumer_id}, 
+    Consumer.findOneAndUpdate({ _id: req.params.consumer_id}, 
         { $pull: { "favorites.beers" : { _id: (req.body._id) ? req.body._id : req.body.beers[0]._id} } },
         (err, consumer) => {
             console.log("consumer", consumer);
