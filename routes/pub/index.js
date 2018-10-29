@@ -136,27 +136,29 @@ pubrouter.put('/:pub_id', auth.required,(req, res) => {
             return;
         }
         if(pub){
-            pub.pubname = req.body.pubname;  
-            pub.location.street = req.body.location.street;
-            pub.location.lat = req.body.location.lat;
-            pub.location.lng = req.body.location.lng;
-            pub.location.city = req.body.location.city;
-            pub.location.uf = req.body.location.uf;
-            pub.location.hood = req.body.location.hood;
-            pub.ownername = req.body.ownername;
-            pub.phone = req.body.phone;
-            pub.email = req.body.email;
-            pub.celphone = req.body.celphone;
-            pub.info = req.body.info;
-            pub.photo = req.body.photo;
-            pub.beers = req.body.beers;
+            console.log("BODY",req.body)
+            pub.pubname = (req.body.pubname) ? req.body.pubname : pub.pubname;  
+            pub.location.street = (req.body.location.street) ? req.body.location.street : pub.location.street;
+            pub.location.lat = (req.body.location.lat) ? req.body.location.lat : pub.location.lat;
+            pub.location.lng = (req.body.location.lng) ? req.body.location.lng : pub.location.lng;
+            pub.location.city = (req.body.location.city) ? req.body.location.city : pub.location.city;
+            pub.location.uf = (req.body.location.uf) ? req.body.location.uf : pub.location.uf;
+            pub.location.hood = (req.body.location.hood) ? req.body.location.hood : pub.location.hood;
+            pub.ownername = (req.body.ownername) ? req.body.ownername : pub.ownername;
+            pub.phone = (req.body.phone) ? req.body.phone : pub.phone;
+            pub.email = (req.body.email) ? req.body.email : pub.email;
+            pub.celphone = (req.body.celphone) ? req.body.celphone : pub.celphone;
+            pub.info = (req.body.info) ? req.body.info : pub.info;
+            pub.photo = (req.body.photo) ? req.body.photo : req.body.photo;
+            pub.beers = (req.body.beers) ? req.body.beers : pub.beers;
+            console.log("PUB",pub);
             // save the pub and check for errors
-            pub.save((err)=> {
+            pub.save((err, updatedPub)=> {
                 if (err) {
                     res.status(500).send({status: "error", message: err});
                     return;
                 }
-                res.status(200).json({status: "success", message: 'Pub modificado com sucesso!' });
+                res.status(200).json({status: "success", message: 'Pub modificado com sucesso!', pub: updatedPub });
             });
         }else{
             res.status(200).json({status: "error", message: "Nenhum pub encontrado."});
